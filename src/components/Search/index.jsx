@@ -3,8 +3,35 @@ import React from 'react'
 import styles from './Search.module.scss'
 import { SearchValue } from '../../App'
 
+import debounce from 'lodash.debounce'
+
 const Search = () => {
-	const { searchInput, setSearchInput } = React.useContext(SearchValue)
+	const [value, setValue] = React.useState('')
+
+	const { setSearchInput } = React.useContext(SearchValue)
+
+	const inputRef = React.useRef()
+
+	function clearInput() {
+		setValue('')
+		setSearchInput('')
+		inputRef.current.focus()
+	}
+
+	//Исп. useCallback чтобы сохранить ссылку на функцию и делаем её отложенной
+
+	const changeInputDebounce = React.useCallback(
+		debounce(str => {
+			setSearchInput(str)
+		}, 250),
+		[]
+	)
+
+	function changeInput(e) {
+		setValue(e.target.value)
+		changeInputDebounce(value)
+	}
+
 	return (
 		<div className={styles.serchContainer}>
 			<svg
@@ -20,15 +47,16 @@ const Search = () => {
 			</svg>
 
 			<input
+				ref={inputRef}
 				className={styles.input}
-				value={searchInput}
-				onChange={e => setSearchInput(e.target.value)}
+				value={value}
+				onChange={changeInput}
 				placeholder='Поиск пиццы ...'
 			/>
 
-			{searchInput && (
+			{value && (
 				<svg
-					onClick={() => setSearchInput('')}
+					onClick={clearInput}
 					className={styles.clearIcon}
 					height='48'
 					viewBox='0 0 48 48'

@@ -1,16 +1,15 @@
 import React from 'react'
 
+const categories = [
+	'Все',
+	'Мясные',
+	'Вегетарианская',
+	'Гриль',
+	'Острые',
+	'Закрытые',
+]
+
 function Categories({ value, changeValue }) {
-
-	const categories = [
-		'Все',
-		'Мясные',
-		'Вегетарианская',
-		'Гриль',
-		'Острые',
-		'Закрытые',
-	]
-
 	return (
 		<div className='categories'>
 			<ul>

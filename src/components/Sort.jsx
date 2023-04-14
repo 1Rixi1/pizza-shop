@@ -1,37 +1,36 @@
 import React from 'react'
+const sortNames = [
+	{
+		name: 'Популярности(от большего)',
+		sortProperty: 'rating',
+	},
+	{
+		name: 'Популярности(от меньшего)',
+		sortProperty: '-rating',
+	},
+	{
+		name: 'цене(от большего)',
+		sortProperty: 'price',
+	},
+	{
+		name: 'цене(от меньшего)',
+		sortProperty: '-price',
+	},
+	{
+		name: 'алфавиту(от А до Я)',
+		sortProperty: '-title',
+	},
+	{
+		name: 'алфавиту(от Я до А)',
+		sortProperty: 'title',
+	},
+]
 
 function Sort({ value, changeValue }) {
 	const [isOpenPopup, setIsOpenPopup] = React.useState(false)
 
 	//desc - От большего к меньшему
 	//asc - От меньшего к большего
-
-	const sortNames = [
-		{
-			name: 'Популярности(от большего)',
-			sortProperty: 'rating',
-		},
-		{
-			name: 'Популярности(от меньшего)',
-			sortProperty: '-rating',
-		},
-		{
-			name: 'цене(от большего)',
-			sortProperty: 'price',
-		},
-		{
-			name: 'цене(от меньшего)',
-			sortProperty: '-price',
-		},
-		{
-			name: 'алфавиту(от А до Я)',
-			sortProperty: '-title',
-		},
-		{
-			name: 'алфавиту(от Я до А)',
-			sortProperty: 'title',
-		},
-	]
 
 	// const sortName = sortNames[activeSortName].name
 

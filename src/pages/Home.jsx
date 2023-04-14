@@ -7,15 +7,21 @@ import Skeleton from '../components/PizzaBlock/Skeleton'
 import Pagination from '../components/Pagination/index.jsx'
 import { SearchValue } from '../App.js'
 
+//axios - для запросов
+import axios from 'axios'
+
 //redux
 import { useSelector, useDispatch } from 'react-redux'
-import { changeCategoryId, changeSort } from '../redux/slices/filterSlice.js'
+import {
+	changeCategoryId,
+	changeSort,
+	changePage,
+} from '../redux/slices/filterSlice.js'
 const Home = () => {
 	//redux
 	const dispatch = useDispatch()
-	// Получаем из Redux Category и Sort
-	const { categoryId, sort } = useSelector(state => state.filter)
-
+	// Получаем из Redux Category , Sort, Page
+	const { categoryId, sort, currentPage } = useSelector(state => state.filter)
 
 	// сохраняем пиццы
 	const [items, setItems] = React.useState([])
@@ -24,8 +30,6 @@ const Home = () => {
 
 	const [isLoading, setIsLoadig] = React.useState(true)
 
-	//Меняем страницу (пагинация)
-	const [paginationPage, setPaginationPage] = React.useState(1)
 
 
 	//Данные о параметрах, которые передаются в url:
@@ -38,16 +42,19 @@ const Home = () => {
 
 	//Получение Pizzas
 	React.useEffect(() => {
-		fetch(
-			`https://62cd07e7a43bf78008509237.mockapi.io/items?${searchPizzaName}&page=${paginationPage}&limit=4&category=${category}&sortBy=${namePropetry}&order=${orderProperty}`
-		).then(req =>
-			req.json().then(resp => {
-				setItems(resp)
+		setIsLoadig(true)
+
+		axios
+			.get(
+				`https://62cd07e7a43bf78008509237.mockapi.io/items?${searchPizzaName}&page=${currentPage}&limit=4&category=${category}&sortBy=${namePropetry}&order=${orderProperty}`
+			)
+			.then(res => {
+				setItems(res.data)
 				setIsLoadig(false)
 			})
-		)
+
 		window.scrollTo(0, 0)
-	}, [categoryId, sort, searchInput, paginationPage])
+	}, [categoryId, sort, searchInput, currentPage])
 
 	//Пиццы и Fake-данные пицц:
 
@@ -76,7 +83,8 @@ const Home = () => {
 			<div className='content__items'>{isLoading ? fakePizza : pizza}</div>
 
 			<Pagination
-				changePagionation={pageNumber => setPaginationPage(pageNumber)}
+				currentPage={currentPage}
+				changePagionation={pageNumber => dispatch(changePage(pageNumber))}
 			/>
 		</div>
 	)
