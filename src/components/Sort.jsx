@@ -1,5 +1,5 @@
 import React from 'react'
-const sortNames = [
+export const sortNames = [
 	{
 		name: 'Популярности(от большего)',
 		sortProperty: 'rating',
