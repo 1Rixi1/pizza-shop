@@ -1,4 +1,8 @@
 import React from 'react'
+
+//desc - От большего к меньшему
+//asc - От меньшего к большего
+
 export const sortNames = [
 	{
 		name: 'Популярности(от большего)',
@@ -29,19 +33,30 @@ export const sortNames = [
 function Sort({ value, changeValue }) {
 	const [isOpenPopup, setIsOpenPopup] = React.useState(false)
 
-	//desc - От большего к меньшему
-	//asc - От меньшего к большего
-
-	// const sortName = sortNames[activeSortName].name
+	const inputRef = React.useRef()
 
 	const handleClickSortName = objValue => {
 		changeValue(objValue)
 		setIsOpenPopup(false)
 	}
 
+	React.useEffect(() => {
+		const handleClickClosePopUp = e => {
+			if (!e.composedPath().includes(inputRef.current)) {
+				setIsOpenPopup(false)
+			}
+		}
+
+		document.body.addEventListener('click', handleClickClosePopUp)
+
+		return () => {
+			document.body.removeEventListener('click', handleClickClosePopUp)
+		}
+	}, [])
+
 	return (
 		<div className='sort'>
-			<div className='sort__label'>
+			<div ref={inputRef} className='sort__label'>
 				<svg
 					width='10'
 					height='6'
