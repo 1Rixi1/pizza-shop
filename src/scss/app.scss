@@ -94,6 +94,20 @@ body {
 	}
 }
 
+.empty-cart {
+	margin: 100px auto 30px;
+	width: 700px;
+	text-align: center;
+
+	&__text {
+		width: 500px;
+		margin: 0 auto 30px;
+	}
+	&__img {
+		width: 450px;
+	}
+}
+
 .cart {
 	&__top {
 		display: flex;
@@ -122,6 +136,8 @@ body {
 	.content__items{
 		display: block;
 	}
+
+
 
 	&__clear {
 		display: flex;
@@ -358,3 +374,8 @@ body {
 		}
 	}
 }
+
+	.error__message {
+		font-weight: 600;
+		font-size: 28px;
+	}

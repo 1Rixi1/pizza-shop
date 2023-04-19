@@ -9,14 +9,10 @@ import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
 import Pagination from '../components/Pagination/index.jsx'
 
-import { SearchValue } from '../App.js'
 import { sortNames } from '../components/Sort.jsx'
 
 //Библ. для парсинга данных из Url
 import qs from 'qs'
-
-//axios - для запросов
-import axios from 'axios'
 
 //redux
 import { useSelector, useDispatch } from 'react-redux'
@@ -25,9 +21,14 @@ import {
 	changeSort,
 	changePage,
 	setFilters,
+	selectFilter,
 } from '../redux/slices/filterSlice.js'
 
+import { fetchPizza } from '../redux/slices/pizzaSlice.js'
+
 const Home = () => {
+	const { searchValue } = useSelector(selectFilter)
+
 	//нужно ли делать первый запрос
 	const isSearch = React.useRef(false)
 	//Есть ли параметры в Url
@@ -38,34 +39,31 @@ const Home = () => {
 	//redux
 	const dispatch = useDispatch()
 	// Получаем из Redux Category , Sort, Page
-	const { categoryId, sort, currentPage } = useSelector(state => state.filter)
+	const { categoryId, sort, currentPage } = useSelector(selectFilter)
 
-	// сохраняем пиццы
-	const [items, setItems] = React.useState([])
+	// сохраняем пиццы из redux
+	const { items, status } = useSelector(state => state.pizza)
+	// const [items, setItems] = React.useState([])
 	//Context
-	const { searchInput } = React.useContext(SearchValue)
-
-	const [isLoading, setIsLoadig] = React.useState(true)
 
 	//Данные о параметрах, которые передаются в url:
 
 	const category = categoryId > 0 ? categoryId : ''
 	const namePropetry = sort.sortProperty.replace('-', '')
 	const orderProperty = sort.sortProperty.includes('-') ? 'ask' : 'desc'
-	const searchPizzaName = searchInput ? `title=${searchInput}` : ''
+	const searchPizzaName = searchValue ? `title=${searchValue}` : ''
 
 	// Получение Pizzas
 	function getPizza() {
-		setIsLoadig(true)
-
-		axios
-			.get(
-				`https://62cd07e7a43bf78008509237.mockapi.io/items?${searchPizzaName}&page=${currentPage}&limit=4&category=${category}&sortBy=${namePropetry}&order=${orderProperty}`
-			)
-			.then(res => {
-				setItems(res.data)
-				setIsLoadig(false)
+		dispatch(
+			fetchPizza({
+				searchPizzaName,
+				currentPage,
+				category,
+				namePropetry,
+				orderProperty,
 			})
+		)
 
 		window.scrollTo(0, 0)
 	}
@@ -95,7 +93,7 @@ const Home = () => {
 		}
 
 		isSearch.current = false
-	}, [categoryId, sort.sortProperty, searchInput, currentPage])
+	}, [categoryId, sort.sortProperty, searchValue, currentPage])
 
 	React.useEffect(() => {
 		if (isParamsUrl.current) {
@@ -109,7 +107,7 @@ const Home = () => {
 		}
 
 		isParamsUrl.current = true
-	}, [categoryId, sort.sortProperty, searchInput, currentPage])
+	}, [categoryId, sort.sortProperty, searchValue, currentPage])
 
 	//Пиццы и Fake-данные пицц:
 
@@ -133,7 +131,18 @@ const Home = () => {
 				/>
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
-			<div className='content__items'>{isLoading ? fakePizza : pizza}</div>
+			<div className='content__items'>
+				{status === 'pending' ? (
+					fakePizza
+				) : status === 'error' ? (
+					<p className='error__message'>
+						Произошла ошибка 😕 Не удалось получить пиццы.Перезагрузите страницу
+						или повторите попытку позже{' '}
+					</p>
+				) : (
+					pizza
+				)}
+			</div>
 
 			<Pagination
 				currentPage={currentPage}

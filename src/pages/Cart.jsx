@@ -1,18 +1,36 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import cartImg from '../assets/img/empty-cart.png'
+
 import CartItemPizza from '../components/CartItemPizza'
 
+//redux
 import { useDispatch, useSelector } from 'react-redux'
-import { resetItems } from '../redux/slices/cartSlice'
+import { resetItems, selectCart } from '../redux/slices/cartSlice'
+
+
 const Cart = () => {
 	const dispatch = useDispatch()
-	const { items, totalPrice } = useSelector(state => state.cart)
+	const { items, totalPrice } = useSelector(selectCart)
 
 	const clearCart = () => {
 		if (window.confirm('Вы действительно хотите удалить все товары?')) {
 			dispatch(resetItems())
 		}
+	}
+
+	if (!items.length) {
+		return (
+			<div className='empty-cart'>
+				<h1 className='empty-cart__title'>Корзина пустая 😕</h1>
+				<p className='empty-cart__text'>
+					Вероятней всего, вы не заказывали ещё пиццу. Для того, чтобы заказать
+					пиццу, перейди на главную страницу.
+				</p>
+				<img className='empty-cart__img' src={cartImg} />
+			</div>
+		)
 	}
 
 	return (
