@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 // Компоненты
 import Categories from '../components/Categories.jsx'
@@ -43,8 +43,6 @@ const Home = () => {
 
 	// сохраняем пиццы из redux
 	const { items, status } = useSelector(state => state.pizza)
-	// const [items, setItems] = React.useState([])
-	//Context
 
 	//Данные о параметрах, которые передаются в url:
 

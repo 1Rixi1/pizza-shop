@@ -9,8 +9,8 @@ import CartItemPizza from '../components/CartItemPizza'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetItems, selectCart } from '../redux/slices/cartSlice'
 
-
 const Cart = () => {
+
 	const dispatch = useDispatch()
 	const { items, totalPrice } = useSelector(selectCart)
 
