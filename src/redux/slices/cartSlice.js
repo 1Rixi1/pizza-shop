@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getItemsCarsLS } from '../../utils/getItemsCarsLS'
+import { getTotalPrice } from '../../utils/getTotalPrice'
+
+const { items, totalPrice } = getItemsCarsLS()
 
 const initialState = {
-	totalPrice: 0,
-	items: [],
+	totalPrice: totalPrice,
+	items: items,
 }
-
-const calculateTotalPrice = items =>
-	items.reduce((sum, itemPizza) => itemPizza.price * itemPizza.count + sum, 0)
 
 const cartSlice = createSlice({
 	name: 'cart',
@@ -26,38 +27,33 @@ const cartSlice = createSlice({
 				})
 			}
 
-			state.totalPrice = calculateTotalPrice(state.items)
+			state.totalPrice = getTotalPrice(state.items)
 		},
 		removeItem(state, action) {
 			const cartPizza = state.items.find(
 				itemPizza => itemPizza.id === action.payload
 			)
 
-			if (cartPizza.count === 1) {
-				state.items = state.items.filter(
-					itemPizza => itemPizza.id !== action.payload
-				)
-			} else {
-				cartPizza.count--
-			}
+			cartPizza.count--
 
-			state.totalPrice = calculateTotalPrice(state.items)
+			state.totalPrice = getTotalPrice(state.items)
 		},
-		resetPizzaItems(state, action) {
+		resetPizzaItem(state, action) {
 			state.items = state.items.filter(
 				itemPizza => itemPizza.id !== action.payload
 			)
+			state.totalPrice = getTotalPrice(state.items)
 		},
 		resetItems(state, action) {
 			state.items = []
-			state.totalPrice = calculateTotalPrice(state.items)
+			state.totalPrice = getTotalPrice(state.items)
 		},
 	},
 })
 
 export const selectCart = state => state.cart
 
-export const { addItem, removeItem, resetPizzaItems, resetItems } =
+export const { addItem, removeItem, resetPizzaItem, resetItems } =
 	cartSlice.actions
 
 export default cartSlice.reducer

@@ -3,14 +3,14 @@ import React from 'react'
 //redux
 import { useDispatch } from 'react-redux'
 
-import { addItem, removeItem, resetPizzaItems } from '../redux/slices/cartSlice'
+import { addItem, removeItem, resetPizzaItem } from '../redux/slices/cartSlice'
 
 const CartItemPizza = ({ title, imageUrl, type, size, price, count, id }) => {
 	const dispatch = useDispatch()
 
 	const clearItemPizza = () => {
 		if (window.confirm('Вы хотите удалить пиццу ?'))
-			dispatch(resetPizzaItems(id))
+			dispatch(resetPizzaItem(id))
 	}
 
 	return (
@@ -25,7 +25,8 @@ const CartItemPizza = ({ title, imageUrl, type, size, price, count, id }) => {
 				</p>
 			</div>
 			<div className='cart__item-count'>
-				<div
+				<button
+				disabled={count === 1}
 					onClick={() => dispatch(removeItem(id))}
 					className='button button--outline button--circle cart__item-count-minus'
 				>
@@ -45,9 +46,9 @@ const CartItemPizza = ({ title, imageUrl, type, size, price, count, id }) => {
 							fill='#EB5A1E'
 						></path>
 					</svg>
-				</div>
+				</button>
 				<b>{count}</b>
-				<div
+				<button
 					onClick={() => dispatch(addItem({ id }))}
 					className='button button--outline button--circle cart__item-count-plus'
 				>
@@ -67,7 +68,7 @@ const CartItemPizza = ({ title, imageUrl, type, size, price, count, id }) => {
 							fill='#EB5A1E'
 						></path>
 					</svg>
-				</div>
+				</button>
 			</div>
 			<div className='cart__item-price'>
 				<b>{count * price} ₽</b>

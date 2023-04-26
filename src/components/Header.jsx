@@ -1,3 +1,4 @@
+import React from 'react'
 import pizzaLogo from '../assets/img/pizza-logo.svg'
 import { Link, useLocation } from 'react-router-dom'
 import Search from './Search'
@@ -7,11 +8,23 @@ import { useSelector } from 'react-redux'
 import { selectCart } from '../redux/slices/cartSlice'
 
 function Header() {
+	const isSetLS = React.useRef(false)
+
 	const { pathname } = useLocation()
 
 	const { totalPrice, items } = useSelector(selectCart)
 
 	const totalCount = items.reduce((sum, itemPizza) => sum + itemPizza.count, 0)
+
+	React.useEffect(() => {
+		if (isSetLS.current) {
+			const data = JSON.stringify(items)
+
+			localStorage.setItem('cartItems', data)
+		}
+
+		isSetLS.current = true
+	}, [items])
 
 	return (
 		<div className='header'>
