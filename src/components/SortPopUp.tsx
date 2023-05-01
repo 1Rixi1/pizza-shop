@@ -1,48 +1,62 @@
 import React from 'react'
 
+import { Sort, SortProperty } from '../redux/filter/types'
+
 //desc - От большего к меньшему
 //asc - От меньшего к большего
 
-export const sortNames = [
+type SortProps = {
+	value: Sort
+	changeValue: (obj: Sort) => void
+}
+
+export const sortNames: Sort[] = [
 	{
 		name: 'Популярности(от большего)',
-		sortProperty: 'rating',
+		sortProperty: SortProperty.RATING_DESC,
 	},
 	{
 		name: 'Популярности(от меньшего)',
-		sortProperty: '-rating',
+		sortProperty: SortProperty.RATING_ASC,
 	},
 	{
 		name: 'цене(от большего)',
-		sortProperty: 'price',
+		sortProperty: SortProperty.PRICE_DESC,
 	},
 	{
 		name: 'цене(от меньшего)',
-		sortProperty: '-price',
+		sortProperty: SortProperty.PRICE_ASC,
 	},
 	{
 		name: 'алфавиту(от А до Я)',
-		sortProperty: '-title',
+		sortProperty: SortProperty.TITLE_ASC,
 	},
 	{
 		name: 'алфавиту(от Я до А)',
-		sortProperty: 'title',
+		sortProperty: SortProperty.TITLE_DESC,
 	},
 ]
 
-function Sort({ value, changeValue }) {
+const SortPopUp: React.FC<SortProps> = React.memo(({ value, changeValue }) => {
 	const [isOpenPopup, setIsOpenPopup] = React.useState(false)
 
-	const inputRef = React.useRef()
+	const inputRef = React.useRef<HTMLDivElement>(null)
 
-	const handleClickSortName = objValue => {
+	const handleClickSortName = (objValue: Sort) => {
 		changeValue(objValue)
 		setIsOpenPopup(false)
 	}
 
 	React.useEffect(() => {
-		const handleClickClosePopUp = e => {
-			if (!e.composedPath().includes(inputRef.current)) {
+		const handleClickClosePopUp = (e: MouseEvent) => {
+			const _event = e as MouseEvent & {
+				composedPath: Node[]
+			}
+
+			if (
+				inputRef.current &&
+				!_event.composedPath().includes(inputRef.current)
+			) {
 				setIsOpenPopup(false)
 			}
 		}
@@ -89,6 +103,6 @@ function Sort({ value, changeValue }) {
 			)}
 		</div>
 	)
-}
+})
 
-export default Sort
+export default SortPopUp

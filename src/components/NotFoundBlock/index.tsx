@@ -1,8 +1,6 @@
-import React from 'react'
-
 import styles from './NotFound.module.scss'
 
-export const NotFoundBlock = () => {
+const NotFoundBlock: React.FC = () => {
 	return (
 		<div className={styles.content}>
 			<span>😕</span>

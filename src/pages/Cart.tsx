@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 
 import cartImg from '../assets/img/empty-cart.png'
@@ -7,10 +6,11 @@ import CartItemPizza from '../components/CartItemPizza'
 
 //redux
 import { useDispatch, useSelector } from 'react-redux'
-import { resetItems, selectCart } from '../redux/slices/cartSlice'
+import { resetItems } from '../redux/cart/slice'
+import { selectCart } from '../redux/cart/selectors'
+import { ItemCartPizza } from '../redux/cart/types'
 
-const Cart = () => {
-
+const Cart: React.FC = () => {
 	const dispatch = useDispatch()
 	const { items, totalPrice } = useSelector(selectCart)
 
@@ -111,7 +111,7 @@ const Cart = () => {
 					</div>
 				</div>
 				<div className='content__items'>
-					{items.map(itemPizza => (
+					{items.map((itemPizza: ItemCartPizza) => (
 						<CartItemPizza key={itemPizza.id} {...itemPizza} />
 					))}
 				</div>

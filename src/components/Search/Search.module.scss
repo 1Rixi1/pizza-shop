@@ -1,4 +1,4 @@
-.serchContainer {
+.searchContainer {
 	position: relative;
 	left: -120px;
 }
@@ -25,7 +25,7 @@
 	opacity: 0.3;
 }
 
-.clearIcon{
+.clearIcon {
 	position: absolute;
 	top: 12px;
 	right: 15px;
@@ -35,7 +35,7 @@
 	transition: all 0.3s ease;
 	cursor: pointer;
 
-	&:hover{
+	&:hover {
 		opacity: 0.8;
 	}
 }

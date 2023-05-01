@@ -1,5 +1,3 @@
-import React from 'react'
-
 import './scss/app.scss'
 
 import { Routes, Route } from 'react-router-dom'
@@ -10,7 +8,7 @@ import Cart from './pages/Cart'
 import FullPizza from './components/FullPizza'
 import MainLayout from './layout/MainLayout'
 
-function App() {
+const App: React.FC = () => {
 	return (
 		<Routes>
 			<Route path='' element={<MainLayout />}>

@@ -3,9 +3,19 @@ import React from 'react'
 //redux
 import { useDispatch } from 'react-redux'
 
-import { addItem, removeItem, resetPizzaItem } from '../redux/slices/cartSlice'
+import { addItem, removeItem, resetPizzaItem } from '../redux/cart/slice'
 
-const CartItemPizza = ({ title, imageUrl, type, size, price, count, id }) => {
+import { ItemCartPizza } from '../redux/cart/types'
+
+const CartItemPizza: React.FC<ItemCartPizza> = ({
+	title,
+	imageUrl,
+	type,
+	size,
+	price,
+	count,
+	id,
+}) => {
 	const dispatch = useDispatch()
 
 	const clearItemPizza = () => {
@@ -26,7 +36,7 @@ const CartItemPizza = ({ title, imageUrl, type, size, price, count, id }) => {
 			</div>
 			<div className='cart__item-count'>
 				<button
-				disabled={count === 1}
+					disabled={count === 1}
 					onClick={() => dispatch(removeItem(id))}
 					className='button button--outline button--circle cart__item-count-minus'
 				>
@@ -49,7 +59,7 @@ const CartItemPizza = ({ title, imageUrl, type, size, price, count, id }) => {
 				</button>
 				<b>{count}</b>
 				<button
-					onClick={() => dispatch(addItem({ id }))}
+					onClick={() => dispatch(addItem({ id } as ItemCartPizza))}
 					className='button button--outline button--circle cart__item-count-plus'
 				>
 					<svg

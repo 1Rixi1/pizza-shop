@@ -1,32 +1,36 @@
 import React from 'react'
 
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 // Компоненты
-import Categories from '../components/Categories.jsx'
-import Sort from '../components/Sort.jsx'
+import Categories from '../components/Categories'
+import SortPopUp, { sortNames } from '../components/SortPopUp'
 import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
-import Pagination from '../components/Pagination/index.jsx'
-
-import { sortNames } from '../components/Sort.jsx'
+import Pagination from '../components/Pagination/index'
 
 //Библ. для парсинга данных из Url
 import qs from 'qs'
 
 //redux
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
 	changeCategoryId,
 	changeSort,
 	changePage,
 	setFilters,
-	selectFilter,
-} from '../redux/slices/filterSlice.js'
+} from '../redux/filter/slice'
 
-import { fetchPizza } from '../redux/slices/pizzaSlice.js'
+import { Sort, filterSliceState } from '../redux/filter/types'
+import { selectFilter } from '../redux/filter/selectors'
 
-const Home = () => {
+import { fetchPizza } from '../redux/pizza/getAsyncPizza'
+import { Status, fetchPizzaArgs } from '../redux/pizza/types'
+import { useAppDispatch } from '../redux/store'
+import { itemPizza } from '../redux/pizza/types'
+import { selectPizza } from '../redux/pizza/selectors'
+
+const Home: React.FC = () => {
 	const { searchValue } = useSelector(selectFilter)
 
 	//нужно ли делать первый запрос
@@ -37,12 +41,12 @@ const Home = () => {
 	const navigate = useNavigate()
 
 	//redux
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	// Получаем из Redux Category , Sort, Page
 	const { categoryId, sort, currentPage } = useSelector(selectFilter)
 
 	// сохраняем пиццы из redux
-	const { items, status } = useSelector(state => state.pizza)
+	const { items, status } = useSelector(selectPizza)
 
 	//Данные о параметрах, которые передаются в url:
 
@@ -60,7 +64,7 @@ const Home = () => {
 				category,
 				namePropetry,
 				orderProperty,
-			})
+			} as fetchPizzaArgs)
 		)
 
 		window.scrollTo(0, 0)
@@ -72,13 +76,13 @@ const Home = () => {
 
 			const sort = sortNames.find(
 				objSort => objSort.sortProperty === objParams.sortProperty
-			)
+			) as Sort
 
 			dispatch(
 				setFilters({
 					...objParams,
-					sort,
-				})
+					sort: sort,
+				} as filterSliceState)
 			)
 
 			isSearch.current = true
@@ -109,30 +113,32 @@ const Home = () => {
 
 	//Пиццы и Fake-данные пицц:
 
-	const pizza = items.map(objItem => (
+	const pizza = items.map((objItem: itemPizza) => (
 		<PizzaBlock key={objItem.id} {...objItem} />
 	))
 
 	const fakePizza = [...new Array(6)].map((_, i) => <Skeleton key={i} />)
 
+	const changeCategoriesValue = React.useCallback((id: number) => {
+		dispatch(changeCategoryId(id))
+	}, [])
+
+	const changeSortPopUpValue = React.useCallback((objValue: Sort) => {
+		dispatch(changeSort(objValue))
+	}, [])
+
 	return (
 		<div className='container'>
 			<div className='content__top'>
-				<Categories
-					value={categoryId}
-					changeValue={id => dispatch(changeCategoryId(id))}
-				/>
+				<Categories value={categoryId} changeValue={changeCategoriesValue} />
 
-				<Sort
-					value={sort}
-					changeValue={objValue => dispatch(changeSort(objValue))}
-				/>
+				<SortPopUp value={sort} changeValue={changeSortPopUpValue} />
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
 			<div className='content__items'>
-				{status === 'pending' ? (
+				{status === Status.LOADING ? (
 					fakePizza
-				) : status === 'error' ? (
+				) : status === Status.ERROR ? (
 					<p className='error__message'>
 						Произошла ошибка 😕 Не удалось получить пиццы.Перезагрузите страницу
 						или повторите попытку позже{' '}

@@ -5,20 +5,20 @@ import styles from './Search.module.scss'
 import debounce from 'lodash.debounce'
 
 //redux
-import { changeSearchValue } from '../../redux/slices/filterSlice'
+import { changeSearchValue } from '../../redux/filter/slice'
 import { useDispatch } from 'react-redux'
 
-const Search = () => {
+const Search: React.FC = () => {
 	const dispatch = useDispatch()
 
 	const [value, setValue] = React.useState('')
 
-	const inputRef = React.useRef()
+	const inputRef = React.useRef<HTMLInputElement>(null)
 
 	function clearInput() {
 		setValue('')
 		dispatch(changeSearchValue(''))
-		inputRef.current.focus()
+		inputRef.current?.focus()
 	}
 
 	//Исп. useCallback чтобы сохранить ссылку на функцию и делаем её отложенной
@@ -30,13 +30,13 @@ const Search = () => {
 		[]
 	)
 
-	function changeInput(e) {
+	function changeInput(e: React.ChangeEvent<HTMLInputElement>) {
 		setValue(e.target.value)
 		changeInputDebounce(value)
 	}
 
 	return (
-		<div className={styles.serchContainer}>
+		<div className={styles.searchContainer}>
 			<svg
 				className={styles.searchIcon}
 				height='512px'

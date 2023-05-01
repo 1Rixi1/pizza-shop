@@ -5,16 +5,20 @@ import Search from './Search'
 
 //redux
 import { useSelector } from 'react-redux'
-import { selectCart } from '../redux/slices/cartSlice'
+import { ItemCartPizza } from '../redux/cart/types'
+import { selectCart } from '../redux/cart/selectors'
 
-function Header() {
+const Header: React.FC = () => {
 	const isSetLS = React.useRef(false)
 
 	const { pathname } = useLocation()
 
 	const { totalPrice, items } = useSelector(selectCart)
 
-	const totalCount = items.reduce((sum, itemPizza) => sum + itemPizza.count, 0)
+	const totalCount = items.reduce(
+		(sum: number, itemPizza: ItemCartPizza) => sum + itemPizza.count,
+		0
+	)
 
 	React.useEffect(() => {
 		if (isSetLS.current) {
@@ -39,7 +43,6 @@ function Header() {
 						</div>
 					</div>
 				</Link>
-
 				{pathname !== '/cart' && <Search />}
 
 				<div className='header__cart'>

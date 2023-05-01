@@ -3,9 +3,13 @@ import React from 'react'
 
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-const FullPizza = () => {
+const FullPizza: React.FC = () => {
 	const navigate = useNavigate()
-	const [pizza, setPizza] = React.useState()
+	const [pizza, setPizza] = React.useState<{
+		imageUrl: string
+		title: string
+		price: number
+	}>()
 
 	const { id } = useParams()
 
@@ -32,14 +36,17 @@ const FullPizza = () => {
 			<div className='fullPizza'>
 				<div className='fullPizza__wrapper'>
 					<img className='fullPizza__img' src={pizza.imageUrl} alt='imgPizza' />
-					<Link to={'/'} className='button button--outline button--add go-back-btn test'>
+					<Link
+						to={'/'}
+						className='button button--outline button--add go-back-btn test'
+					>
 						Вернуться назад
 					</Link>
 				</div>
 
 				<div className='fullPizza__desc'>
-					<p className='fullPizza__title'>Пицца: {pizza.title}</p>
-					<p className='fullPizza__price'>цена: {pizza.price}</p>
+					<p className='fullPizza__title'>Пицца: {pizza.title}.</p>
+					<p className='fullPizza__price'>Цена: {pizza.price}.</p>
 					<p>
 						Описание: Lorem ipsum dolor sit amet consectetur, adipisicing elit.
 						Reiciendis nemo sunt vitae, accusamus impedit ullam consequuntur

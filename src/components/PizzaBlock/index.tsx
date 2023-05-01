@@ -1,14 +1,25 @@
 import React from 'react'
 
 //redux
-import { addItem, selectCart } from '../../redux/slices/cartSlice'
+import { ItemCartPizza } from '../../redux/cart/types'
+
+import { selectCart } from '../../redux/cart/selectors'
+import { addItem } from '../../redux/cart/slice'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { itemPizza } from '../../redux/pizza/types'
 
 const typeNames = ['тонкое', 'традиционное']
 
-function PizzaBlock({ imageUrl, title, types, sizes, price, id }) {
+const PizzaBlock: React.FC<itemPizza> = ({
+	id,
+	imageUrl,
+	title,
+	types,
+	sizes,
+	price,
+}) => {
 	const dispatch = useDispatch()
 	const { items } = useSelector(selectCart)
 
@@ -18,19 +29,22 @@ function PizzaBlock({ imageUrl, title, types, sizes, price, id }) {
 	const addItemCart = () => {
 		dispatch(
 			addItem({
-				title,
+				id,
 				imageUrl,
+				title,
 				type: typeNames[activeType],
 				size: sizes[activeSize],
 				price,
-				id,
+				count: 0,
 			})
 		)
 	}
 
-	const itemPizza = items.find(itemPizza => itemPizza.id === id)
+	const itemPizza = items.find(
+		(itemPizza: ItemCartPizza) => itemPizza.id === id
+	)
 
-	const count = itemPizza ? itemPizza.count : 0
+	const count = itemPizza?.count || 0
 
 	return (
 		<div className='pizza-block__wrapper'>
