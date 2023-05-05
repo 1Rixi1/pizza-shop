@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import cartImg from '../assets/img/empty-cart.png'
 
-import CartItemPizza from '../components/CartItemPizza'
+import { CartItemPizza } from '../components'
 
 //redux
 import { useDispatch, useSelector } from 'react-redux'

@@ -1,14 +1,14 @@
 import React from 'react'
 import pizzaLogo from '../assets/img/pizza-logo.svg'
 import { Link, useLocation } from 'react-router-dom'
-import Search from './Search'
+import { Search } from './index'
 
 //redux
 import { useSelector } from 'react-redux'
 import { ItemCartPizza } from '../redux/cart/types'
 import { selectCart } from '../redux/cart/selectors'
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
 	const isSetLS = React.useRef(false)
 
 	const { pathname } = useLocation()
@@ -85,5 +85,3 @@ const Header: React.FC = () => {
 		</div>
 	)
 }
-
-export default Header

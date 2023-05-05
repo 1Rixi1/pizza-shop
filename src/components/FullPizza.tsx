@@ -3,7 +3,7 @@ import React from 'react'
 
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-const FullPizza: React.FC = () => {
+export const FullPizza: React.FC = () => {
 	const navigate = useNavigate()
 	const [pizza, setPizza] = React.useState<{
 		imageUrl: string
@@ -59,4 +59,3 @@ const FullPizza: React.FC = () => {
 	)
 }
 
-export default FullPizza

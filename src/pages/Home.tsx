@@ -3,11 +3,16 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // Компоненты
-import Categories from '../components/Categories'
-import SortPopUp, { sortNames } from '../components/SortPopUp'
-import PizzaBlock from '../components/PizzaBlock'
-import Skeleton from '../components/PizzaBlock/Skeleton'
-import Pagination from '../components/Pagination/index'
+
+import {
+	Categories,
+	SortPopUp,
+	PizzaBlock,
+	Skeleton,
+	Pagination,
+} from '../components'
+
+import { sortNames } from '../components/SortPopUp'
 
 //Библ. для парсинга данных из Url
 import qs from 'qs'

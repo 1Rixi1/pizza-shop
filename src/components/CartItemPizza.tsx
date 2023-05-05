@@ -7,7 +7,7 @@ import { addItem, removeItem, resetPizzaItem } from '../redux/cart/slice'
 
 import { ItemCartPizza } from '../redux/cart/types'
 
-const CartItemPizza: React.FC<ItemCartPizza> = ({
+export const CartItemPizza: React.FC<ItemCartPizza> = ({
 	title,
 	imageUrl,
 	type,
@@ -107,4 +107,3 @@ const CartItemPizza: React.FC<ItemCartPizza> = ({
 	)
 }
 
-export default CartItemPizza

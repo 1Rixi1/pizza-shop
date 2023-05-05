@@ -12,7 +12,7 @@ import { itemPizza } from '../../redux/pizza/types'
 
 const typeNames = ['тонкое', 'традиционное']
 
-const PizzaBlock: React.FC<itemPizza> = ({
+export const PizzaBlock: React.FC<itemPizza> = ({
 	id,
 	imageUrl,
 	title,
@@ -104,4 +104,3 @@ const PizzaBlock: React.FC<itemPizza> = ({
 	)
 }
 
-export default PizzaBlock

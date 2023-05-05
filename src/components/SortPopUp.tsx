@@ -37,7 +37,7 @@ export const sortNames: Sort[] = [
 	},
 ]
 
-const SortPopUp: React.FC<SortProps> = React.memo(({ value, changeValue }) => {
+export const SortPopUp: React.FC<SortProps> = React.memo(({ value, changeValue }) => {
 	const [isOpenPopup, setIsOpenPopup] = React.useState(false)
 
 	const inputRef = React.useRef<HTMLDivElement>(null)
@@ -105,4 +105,3 @@ const SortPopUp: React.FC<SortProps> = React.memo(({ value, changeValue }) => {
 	)
 })
 
-export default SortPopUp
