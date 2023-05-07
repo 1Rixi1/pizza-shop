@@ -8,13 +8,30 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		@media (max-width: 650px) {
-			flex-direction: column;
-      .header__cart{
-        margin-top: 20px;
-      }
+		@media (max-width: 960px) {
+			flex-wrap: wrap;
 		}
+		@media (max-width: 570px) {
+			.header__cart {
+				span:first-child,
+				.button__delimiter {
+					display: none;
+				}
+				.button--cart {
+					justify-content: center;
+					padding: 10px;
+					@media(max-width: 480px) {
+						padding: 4px;
+					}
+				}
 
+				@media (max-width: 480px) {
+					position: absolute;
+					top: 30px;
+					right: 20px;
+				}
+			}
+		}
 	}
 
 	&__logo {
@@ -34,6 +51,9 @@
 
 		p {
 			color: #7b7b7b;
+		}
+		@media (max-width: 960px) {
+			margin-bottom: 10px;
 		}
 	}
 }
